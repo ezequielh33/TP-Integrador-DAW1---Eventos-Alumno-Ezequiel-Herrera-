@@ -1,0 +1,305 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### Eventos
+
+
+### 1. CREAR EVENTO
+POST http://localhost:8080/api/eventos
+Content-Type: application/json
+
+{
+  "nombre": "Festival Rock en Chilecito",
+  "fecha": "2027-12-20T21:00:00",
+  "capacidad": 10,
+  "precio": 15000
+}
+
+### 2. LISTAR EVENTOS
+GET http://localhost:8080/api/eventos
+
+### 3. BUSCAR EVENTO POR ID
+GET http://localhost:8080/api/eventos/1
+
+### 4. BUSCAR EVENTOS POR NOMBRE
+GET http://localhost:8080/api/eventos?nombre=rock
+
+### 5. BUSCAR EVENTO SIN RESULTADOS
+GET http://localhost:8080/api/eventos?nombre=inexistente
+
+### 6. MODIFICAR EVENTO
+PUT http://localhost:8080/api/eventos/1
+Content-Type: application/json
+
+{
+  "nombre": "Festival Rock en Chilecito",
+  "fecha": "2027-12-21T21:00:00",
+  "capacidad": 10,
+  "precio": 18000
+}
+
+### 7. BUSCAR EVENTO INEXISTENTE
+GET http://localhost:8080/api/eventos/999
+
+### 8. CREAR EVENTO CON DATOS INVALIDOS
+POST http://localhost:8080/api/eventos
+Content-Type: application/json
+
+{
+  "nombre": "",
+  "fecha": "2020-01-01T10:00:00",
+  "capacidad": 0,
+  "precio": -100
+}
+
+
+### Asistentes
+
+
+### 9. CREAR ASISTENTE
+POST http://localhost:8080/api/asistentes
+Content-Type: application/json
+
+{
+  "nombre": "Ezequiel Herrera",
+  "email": "ezequiel@gmail.com"
+}
+
+### 10. CREAR OTRO ASISTENTE
+POST http://localhost:8080/api/asistentes
+Content-Type: application/json
+
+{
+  "nombre": "María Páez",
+  "email": "maria@gmail.com"
+}
+
+### 11. LISTAR ASISTENTES
+GET http://localhost:8080/api/asistentes
+
+### 12. BUSCAR ASISTENTE POR ID
+GET http://localhost:8080/api/asistentes/1
+
+### 13. MODIFICAR ASISTENTE
+PUT http://localhost:8080/api/asistentes/1
+Content-Type: application/json
+
+{
+  "nombre": "Ezequiel Herrera",
+  "email": "ezequiel.herrera@gmail.com"
+}
+
+### 14. CREAR ASISTENTE CON EMAIL INVALIDO
+POST http://localhost:8080/api/asistentes
+Content-Type: application/json
+
+{
+  "nombre": "Pedro",
+  "email": "correo-invalido"
+}
+
+### 15. BUSCAR ASISTENTE INEXISTENTE
+GET http://localhost:8080/api/asistentes/999
+
+
+### Entradas y Reglas de negocio
+
+
+### 16. CREAR ENTRADA PARA ASISTENTE (EZEQUIEL)
+POST http://localhost:8080/api/entradas
+Content-Type: application/json
+
+{
+  "eventoId": 1,
+  "asistenteId": 1
+}
+
+### 17. LISTAR ENTRADAS
+GET http://localhost:8080/api/entradas
+
+### 18. BUSCAR ENTRADA POR ID
+GET http://localhost:8080/api/entradas/1
+
+### 19. CONSULTAR ENTRADAS DEL FESTIVAL
+GET http://localhost:8080/api/eventos/1/entradas
+
+### 20. EVITAR ENTRADAS DUPLICADAS
+POST http://localhost:8080/api/entradas
+Content-Type: application/json
+
+{
+  "eventoId": 1,
+  "asistenteId": 1
+}
+
+### 21. CREAR ENTRADA PARA OTRO ASISTENTE (MARIA)
+POST http://localhost:8080/api/entradas
+Content-Type: application/json
+
+{
+  "eventoId": 1,
+  "asistenteId": 2
+}
+
+### 22. ANULAR ENTRADA DE MARIA
+PATCH http://localhost:8080/api/entradas/2/estado
+Content-Type: application/json
+
+{
+  "estado": "ANULADA"
+}
+
+### 23. VOLVER A RESERVAR PARA MARIA
+POST http://localhost:8080/api/entradas
+Content-Type: application/json
+
+{
+  "eventoId": 1,
+  "asistenteId": 2
+}
+
+### 24. CREAR ENTRADA CON EVENTO INEXISTENTE
+POST http://localhost:8080/api/entradas
+Content-Type: application/json
+
+{
+  "eventoId": 999,
+  "asistenteId": 1
+}
+
+### 25. CREAR ENTRADA CON ASISTENTE INEXISTENTE
+POST http://localhost:8080/api/entradas
+Content-Type: application/json
+
+{
+  "eventoId": 1,
+  "asistenteId": 999
+}
+
+### 26. CONSULTAR ENTRADAS DE EVENTO INEXISTENTE
+GET http://localhost:8080/api/eventos/999/entradas
+
+### 27. INTENTAR ELIMINAR FESTIVAL CON ENTRADAS
+DELETE http://localhost:8080/api/eventos/1
+
+### 28. PAGAR ENTRADA DE EZEQUIEL
+PATCH http://localhost:8080/api/entradas/1/estado
+Content-Type: application/json
+
+{
+  "estado": "PAGADA"
+}
+
+
+### Estados de las entradas
+
+
+### 29. MARCAR ENTRADA DE EZEQUIEL COMO USADA
+PATCH http://localhost:8080/api/entradas/1/estado
+Content-Type: application/json
+
+{
+  "estado": "USADA"
+}
+
+### 30. INTENTAR PAGAR ENTRADA YA UTILIZADA
+PATCH http://localhost:8080/api/entradas/1/estado
+Content-Type: application/json
+
+{
+  "estado": "PAGADA"
+}
+
+### 31. INTENTAR ESTADO INVALIDO
+PATCH http://localhost:8080/api/entradas/1/estado
+Content-Type: application/json
+
+{
+  "estado": "CANCELADA"
+}
+
+### 32. CAMBIAR ESTADO DE ENTRADA INEXISTENTE
+PATCH http://localhost:8080/api/entradas/999/estado
+Content-Type: application/json
+
+{
+  "estado": "PAGADA"
+}
+
+### 33. CAMBIAR ESTADO SIN ENVIARLO
+PATCH http://localhost:8080/api/entradas/1/estado
+Content-Type: application/json
+
+{}
+
+### 34. CONSULTAR ENTRADA DE EZEQUIEL
+GET http://localhost:8080/api/entradas/1
+
+### 35. LISTAR ENTRADAS DEL FESTIVAL
+GET http://localhost:8080/api/eventos/1/entradas
+
+
+### Capacidad y eliminación
+
+
+### 36. CREAR EVENTO CON CAPACIDAD LIMITADA
+POST http://localhost:8080/api/eventos
+Content-Type: application/json
+
+{
+  "nombre": "Festival Rock en Chilecito - Evento limitado",
+  "fecha": "2027-11-20T20:00:00",
+  "capacidad": 1,
+  "precio": 5000
+}
+
+### 37. RESERVAR UNICA ENTRADA DISPONIBLE
+POST http://localhost:8080/api/entradas
+Content-Type: application/json
+
+{
+  "eventoId": 2,
+  "asistenteId": 1
+}
+
+### 38. INTENTAR SUPERAR LA CAPACIDAD
+POST http://localhost:8080/api/entradas
+Content-Type: application/json
+
+{
+  "eventoId": 2,
+  "asistenteId": 2
+}
+
+### 39. ELIMINAR EVENTO SIN ENTRADAS
+DELETE http://localhost:8080/api/eventos/2
+
+### 40. CREAR ASISTENTE TEMPORAL
+POST http://localhost:8080/api/asistentes
+Content-Type: application/json
+
+{
+  "nombre": "Asistente Temporal",
+  "email": "temporal@gmail.com"
+}
+
+### 41. ELIMINAR ASISTENTE TEMPORAL
+DELETE http://localhost:8080/api/asistentes/3
+
+
+### PRUEBA 42 - Crear evento temporal
+
+POST http://localhost:8080/api/eventos
+Content-Type: application/json
+
+{
+  "nombre": "Evento temporal para eliminar",
+  "fecha": "2027-12-25T20:00:00",
+  "capacidad": 5,
+  "precio": 3000
+}
+
+### PRUEBA 43 - Eliminar evento sin entradas
+
+DELETE http://localhost:8080/api/eventos/3
