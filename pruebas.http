@@ -303,3 +303,14 @@ Content-Type: application/json
 ### PRUEBA 43 - Eliminar evento sin entradas
 
 DELETE http://localhost:8080/api/eventos/3
+
+POST http://localhost:8080/api/entradas
+Content-Type: application/json
+
+{}
+
+### Validar entrada sin evento ni asistente
+POST http://localhost:8080/api/entradas
+Content-Type: application/json
+
+{}

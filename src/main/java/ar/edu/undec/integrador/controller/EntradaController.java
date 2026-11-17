@@ -33,7 +33,7 @@ public class EntradaController {
     }
 
     @PostMapping
-    public ResponseEntity<Entrada> crear(@RequestBody CrearEntradaRequest request) {
+    public ResponseEntity<Entrada> crear(@Valid @RequestBody CrearEntradaRequest request) {
         Entrada creada = entradaService.crear(
                 request.eventoId(),
                 request.asistenteId()
